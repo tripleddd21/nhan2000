@@ -23,7 +23,7 @@ function giohang_create_view(){
  	$sql = "
  			CREATE VIEW IF NOT EXISTS tour_dat AS
  			SELECT  gio_hang.Ma_giohang,gio_hang.Ngay_dat,tour.Ten_tour,
- 					khach_hang.Ten_KH, khach_hang.Email
+ 					khach_hang.Ten_KH, khach_hang.Email,tour.Gia
 			FROM gio_hang,khach_hang, tour
 			WHERE gio_hang.Ma_KH = khach_hang.Ma_KH
 			AND gio_hang.Ma_tour = tour.Ma_tour " ;
