@@ -1,5 +1,6 @@
 <?php
-	session_start();
+	//session_start();
+	ob_start();
 	// add thu vien
 	require "dao/pdo.php";
 	require "dao/loai-tour.php";
@@ -10,6 +11,7 @@
 	require "dao/khachhang.php";
 	require "dao/admin.php";
 	require "dao/giohang.php";
+	require "Classes/PHPExcel.php";
 	
 	// add head
 	require "admin/layout/head-admin.php";
@@ -69,4 +71,7 @@
 
 	// add footer
 	require "admin/layout/foot-admin.php";
+?>
+<?php 
+ob_end_flush();
 ?>

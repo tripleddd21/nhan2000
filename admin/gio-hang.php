@@ -1,33 +1,8 @@
 
 <?php 
-    // $temp = false;
-    // if(isset($_POST['action']) && $_POST['action'] == 'add-cate' ){
-    //     $tenloaitour = $_POST['name'];
-    //     $sort=$_POST['sort'];
-    //     loai_tour_insert($tenloaitour,$sort);
-    // }
 
-    // if(isset($_GET['action']) && $_GET['action'] == 'delete'){
-    //     khach_hang_delete($_GET['id']);
-    // }
-
-
-    // if(isset($_GET['action']) && $_GET['action'] == 'edit'){
-    //     $temp = true;
-    //     $loaitour = loai_tour_select_by_id($_GET['id']);
-    //     $temp=true;
-
-    // }
-    // if(isset($_POST['action']) && $_POST['action'] == 'edit'){
-    //     $maloaitour = $_POST['id'];
-    //     $tenloaitour = $_POST['name'];
-    //     $sort = $_POST['sort'];
-    //     loai_tour_update($maloaitour,$tenloaitour,$sort);
-    //     header('Localtion: admin.php?page=loai-tour');
-    //     $temp = false;
-    // }
 ?>     
-        
+    
         
         
         
@@ -73,6 +48,7 @@
                                 <div class="input-group-prepend">
                                     <!-- <span class="input-group-text">Person</span> -->
                                     <input type="submit" name="thongke" value="Search" class="input-group-text">
+                                    <!-- <input type="submit" name="search" value="Search" class="input-group-text"> -->
                                 </div>
                                 <input type="text" placeholder="Search Month" class="form-control" name="search-month" >
                                 <input type="text" placeholder="Search Year" class="form-control" name="search-year" >
@@ -94,6 +70,7 @@
                                                 <th>Tên khách hàng </th>
                                                 <th>Ngày đặt</th>
                                                 <th>Email</th>
+                                                <th>Giá</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -104,6 +81,17 @@
                                                 $searchm = $_GET['search-month'];
                                                 $searchy = $_GET['search-year'];
                                                 $giohang =  giohang_select_month_year($searchm, $searchy);
+                                                $objExcel = new PHPExcel();
+                                                $objExcel->setActiveSheetIndex(0);
+                                                $name = "Thongke-$searchm-$searchy";
+                                                $sheet = $objExcel->getActiveSheet()->setTitle($name);
+                                                $rowCount = 1;
+                                                $sheet->setCellValue('A'.$rowCount,'Mã giỏ hàng');
+                                                $sheet->setCellValue('B'.$rowCount,'Tên Tour');
+                                                $sheet->setCellValue('C'.$rowCount,'Tên khách hàng');
+                                                $sheet->setCellValue('D'.$rowCount,'Ngày đặt');
+                                                $sheet->setCellValue('E'.$rowCount,'Email');
+                                                $sheet->setCellValue('F'.$rowCount,'Giá');
                                                 foreach ($giohang as $item){
                                                    extract($item);
                                                     echo "<tr>";
@@ -112,8 +100,34 @@
                                                     echo "<td>".$Ten_KH."</td>";
                                                     echo "<td>".$Ngay_dat."</td>";
                                                     echo "<td>".$Email."</td>";
+                                                    echo "<td>".$Gia."</td>";
                                                     echo "</tr>";
+                                                    $rowCount++;
+                                                    $sheet->setCellValue('A'.$rowCount,$Ma_giohang);
+                                                $sheet->setCellValue('B'.$rowCount,$Ten_tour);
+                                                $sheet->setCellValue('C'.$rowCount,$Ten_KH);
+                                                $sheet->setCellValue('D'.$rowCount,$Ngay_dat);
+                                                $sheet->setCellValue('E'.$rowCount,$Email);
+                                                $sheet->setCellValue('F'.$rowCount,$Gia);
                                                 }
+
+                                                $objWriter = new PHPExcel_Writer_Excel2007($objExcel);
+                                                $filename = 'thongke.xlsx';
+                                                
+                                                header('Content-Disposition: attachment; filename="'.$filename.'"');
+                                                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                                                header('Content-Length: ' .filesize($filename));
+                                                header('Content-Transfer-Encoding: binary');
+                                                header('Cache-Control: must-revalidate');
+                                                header('Pragma: no-cache');
+                                                // //readfile($filename);
+                                               // @header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                                               //  @header('Content-Disposition: attachment;filename="thongke.xlsx"');
+                                               //  @header('Cache-Control: max-age=0');
+                                                
+                                                $objWriter->save($filename);
+                                                exit();
+
                                             }
                                             else{
                                                 $giohang= giohang_select_by_kh();
@@ -125,6 +139,7 @@
                                                     echo "<td>".$Ten_KH."</td>";
                                                     echo "<td>".$Ngay_dat."</td>";
                                                     echo "<td>".$Email."</td>";
+                                                    echo "<td>".$Gia."</td>";
                                                     echo "</tr>";
                                                 }
                                             }
