@@ -68,12 +68,15 @@
                 <!-- End Page Header -->
                 <div class="row flex-row">
                     <div class="col-12">
-
-                        <!-- search -->
-                        <form id="searchForm" action="admin.php?page=gio-hang" method="get">
-                            <input style="display: none" type="submit" name="page" value="gio-hang" />
-                            <input type="text" placeholder="Search something ..." class="form-control" name="search" >
-                           <!--  <input type="text" placeholder="Search something ..." class="form-control" name="search-month" > -->
+                        <form>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <!-- <span class="input-group-text">Person</span> -->
+                                    <input type="submit" name="thongke" value="Search" class="input-group-text">
+                                </div>
+                                <input type="text" placeholder="Search Month" class="form-control" name="search-month" >
+                                <input type="text" placeholder="Search Year" class="form-control" name="search-year" >
+                            </div>
                         </form>
                         
                         <!-- Sorting -->
@@ -89,17 +92,18 @@
                                                 <th>Mã giỏ hàng</th>
                                                 <th>Tên tour </th>
                                                 <th>Tên khách hàng </th>
-                                                <th>SĐT</th>
+                                                <th>Ngày đặt</th>
                                                 <th>Email</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
                                             giohang_create_view();
-                                            if(isset($_GET['search']))
+                                            if(isset($_GET['thongke']))
                                             {
-                                                $search = $_GET['search'];
-                                                $giohang = giohang_select_ten_kh($search);
+                                                $searchm = $_GET['search-month'];
+                                                $searchy = $_GET['search-year'];
+                                                $giohang =  giohang_select_month_year($searchm, $searchy);
                                                 foreach ($giohang as $item){
                                                    extract($item);
                                                     echo "<tr>";
@@ -111,21 +115,6 @@
                                                     echo "</tr>";
                                                 }
                                             }
-                                            // if(isset($_GET['search-month']))
-                                            // {
-                                            //     $search = $_GET['search-month'];
-                                            //     $giohang = giohang_select_month($search);
-                                            //     foreach ($giohang as $item){
-                                            //        extract($item);
-                                            //         echo "<tr>";
-                                            //         echo "<td>".$Ma_giohang."</td>";
-                                            //         //echo "<td>".$Ten_tour."</td>";
-                                            //         //echo "<td>".$Ten_KH."</td>";
-                                            //         //echo "<td>".$Ngay_dat."</td>";
-                                            //         echo "<td>".$month."</td>";
-                                            //         echo "</tr>";
-                                            //     }
-                                            // }
                                             else{
                                                 $giohang= giohang_select_by_kh();
                                                 foreach ($giohang as $item){

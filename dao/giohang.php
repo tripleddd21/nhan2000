@@ -35,12 +35,13 @@ function giohang_select_ten_kh($search){
 			WHERE Ten_KH like '%$search%' ";
 			return pdo_query($sql);
  }  
-function giohang_select_month($search1){
- 	$sql = "SELECT Ma_giohang , MONTH(Ngay_dat) as month, 
- 			FROM tour_dat
-			";
+function giohang_select_month_year($search1, $search2){
+ 	$sql = "SELECT * FROM tour_dat 
+ 			WHERE MONTH(Ngay_dat) like '%$search1%' 
+ 			AND YEAR(Ngay_dat) like '%$search2%'";
 			return pdo_query($sql);
  }
+
 function giohang_drop_view()
 {
 	$sql = " DROP VIEW tour_dat ";
