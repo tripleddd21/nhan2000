@@ -17,6 +17,9 @@
 	if(isset($_GET['page'])){
 		$page=$_GET['page'];
 	}
+	elseif(isset($_GET['thongke'])){
+		$page= "gio-hang";
+	}
 	else {
 		$page = 'index';
 		
@@ -52,7 +55,7 @@
 	}
 	elseif($page=="gio-hang")
 	{
-		require "admin/gio-hang.php";
+		include "admin/gio-hang.php";
 	}
 	elseif($page=="profile")
 	{
@@ -60,7 +63,9 @@
 	}
 	else{
 		echo '';
+		giohang_drop_view();
 	}
+
 
 	// add footer
 	require "admin/layout/foot-admin.php";
